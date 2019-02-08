@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue w/ Boostrap</title>
+<!--  <script src="https://unpkg.com/vue"></script>-->
+  <script src="vue.js"></script>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app">
+    {{ message }}
+  </div>
+<br>
+  
+<div id="app-2">
+  <span v-bind:title="message">
+    Hover your mouse over me for a few seconds
+    to see my dynamically bound title!
+  </span>
+</div>
+<br>
+  
+<div id="app-3">
+  <button class="btn btn-success"  v-on:click="seen = false">Show</button>
+  <button class="btn btn-danger" v-on:click="seen = true">Hide</button><br><br>
+  <div v-if="!seen" class="alert alert-info" role="alert">Hide me on click event</div>
+</div>
+
+<div class="list-group" id="app-4">
+  <h2>TODO:</h2>
+    <a class="list-group-item list-group-item-action" v-for="todo in todos">
+      {{ todo.text }}
+    </a>
+</div>
+
+<div id="app-5">
+  <p>{{ message }}</p>
+  <button class="btn btn-danger"v-on:click="reverseMessage">Reverse Message</button>
+</div>
+
+<div id="app-6" style="width:50%">
+  <p>{{ message }}</p>
+  <input class="form-control" v-model="message">
+</div>
+<br><br>
+
+<div id="app-7">
+  <ol>
+    <!--
+      Now we provide each todo-item with the todo object
+      it's representing, so that its content can be dynamic.
+      We also need to provide each component with a "key",
+      which will be explained later.
+    -->
+    <h3>Grocery List</h3>
+    <todo-item class="list-group" style="width:50%"
+      v-for="item in groceryList"
+      v-bind:todo="item"
+      v-bind:key="item.id"
+    ></todo-item>
+  </ol>
+</div>
+
+<div id="people-1" style="width:50%">
+  <h1>{{title}}</h1>
+  <ul class="list-group">
+    <li class="list-group-item" v-for="person in people">
+      {{ person.name }}
+    </li>
+</div>
+
+
+<div id="components-demo">
+  <button-counter></button-counter>
+  <button-counter></button-counter>
+  <button-counter></button-counter>
+  <button-counter></button-counter>
+</div>
+  
+
+<!--START SCRIPT-->
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello Vue!'
+      }
+    })
+
+var app2 = new Vue({
+  el: '#app-2',
+  data: {
+    message: 'You loaded this page on ' + new Date().toLocaleString()
+  }
+})
+
+var app3 = new Vue({
+  el: '#app-3',
+  data: {
+    seen: true
+  },
+  methods:{
+    show: function(){alert('clicked')}
+  }
+})
+
+
+Vue.component('todo-item', {
+  props: ['todo'],
+  template: '<li class="list-group-item">{{ todo.text }}</li>'
+})
+    
+var app4 = new Vue({
+  el: '#app-4',
+  data: {
+    todos: [
+      { text: 'Learn JavaScript' },
+      { text: 'Learn Vue' },
+      { text: 'Build something awesome' }
+    ]
+  }
+})
+
+
+var app5 = new Vue({
+  el: '#app-5',
+  data: {
+    message: 'Hello Vue.js!'
+  },
+  methods: {
+    reverseMessage: function () {
+      this.message = this.message.split('').reverse().join('')
+    }
+  }
+})
+
+
+var app6 = new Vue({
+  el: '#app-6',
+  data: {
+    message: 'Hello Vue!'
+  }
+})
+
+var app7 = new Vue({
+  el: '#app-7',
+  data: {
+    groceryList: [
+      { id: 0, text: 'Vegetables' },
+      { id: 1, text: 'Cheese' },
+      { id: 2, text: 'Whatever else humans are supposed to eat' }
+    ]
+  }
+})
+
+    
+var people = new Vue({
+  el: "#people-1",
+  data:{
+    title: "People",
+    people:[
+      {name:"Joe"},
+      {name:"Sarah"},
+      {name:"Bob"},
+      {name:"Rachel"},
+      {name:"Josh"}
+    ]
+  }
+})
+
+// Define a new component called button-counter
+Vue.component('button-counter', {
+  data: function () {
+    return {
+      count: 0
+    }
+  },
+  template: '<button class="btn btn-primary" v-on:click="count++">You clicked me {{ count }} times.</button>'
+})
+    
+new Vue({ el: '#components-demo' })
+    
+  </script>
+</body>
+</html>
