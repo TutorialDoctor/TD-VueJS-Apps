@@ -4,6 +4,7 @@
         <p>My name is {{name}} and I am {{age}} years old</p>
         <a href="" class="btn btn-warning" v-on:click="greet">Say Hello</a>
         <a href="" class="btn btn-danger" v-on:click="salute">Say Goodbye</a>
+        <button v-on:click="queryGithub()">Get Github</button>
     </div><!--end base-->
 </template>
 
@@ -29,7 +30,17 @@ export default {
   },
   methods:{
     greet: () => alert('Hola!'),
-    salute: () => alert('Adios!')
+    salute: () => alert('Adios!'),
+    queryGithub(){
+      fetch('http://api.github.com/users/cassidoo')
+        .then((j) => {
+          return j.json();
+      })
+      .then((r) => {
+        console.log(r);
+      })
+    },
+    speak: () => alert('I spoke')
   }
 }
 </script>
